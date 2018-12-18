@@ -22,18 +22,45 @@ $('.btn').on('click', function() {
   userClickedPattern.push(userChosenColor);
   playSound(userChosenColor);
   animatePress(userChosenColor);
-checkAnswer();
+checkAnswer(userClickedPattern.length-1);
 
 });
 
 
 function checkAnswer(currentLevel){
 
-};
+  if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
+
+     console.log("success");
+
+     //4. If the user got the most recent answer right in step 3, then check that they have finished their sequence with another if statement.
+     if (userClickedPattern.length === gamePattern.length){
+
+       //5. Call nextSequence() after a 1000 millisecond delay.
+       setTimeout(function () {
+         nextSequence();
+       }, 1000);
+
+     }
+
+   } else {
+
+     console.log("wrong");
+   var wrong= new Audio('sounds/wrong.mp3');
+  wrong.play();
+    $('body').addClass('game-over');
+  setTimeout(function(){
+$('body').removeClass('game-over');
+},200);
+$('h1').text('Game Over, Press Any Key to Restart');
+  startOver();
+   }
+}
+
 
 
 function nextSequence() {
-
+  userClickedPattern = [];
   level++;
 
 
@@ -63,4 +90,11 @@ function animatePress(currentColour) {
   setTimeout(function() {
     $('#' + currentColour).removeClass('pressed');
   }, 100);
+}
+
+
+function startOver(){
+level=0;
+gamePattern=[];
+started=false;
 }
